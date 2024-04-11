@@ -1,10 +1,14 @@
 <?php
 $error = null;
+$success = null;
 $email = null;
 if (!empty($_POST['email'])) {
     $email = $_POST['email'];
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
+        $file = __DIR__ . DIRECTORY_SEPARATOR . 'emails' . DIRECTORY_SEPARATOR . date('Y-m-d');
+        file_put_contents($file, $email . PHP_EOL, FILE_APPEND);
+        $success = "Votre email à bien était enregistré";
+        $email = null;
     } else {
         $error = "Email invalide";
     }
@@ -21,6 +25,12 @@ require 'elements/header.php';
 <?php if($error): ?>
     <div class="alert alert-danger">
         <?= $error ?>
+    </div>
+<?php endif ?>
+
+<?php if($success): ?>
+    <div class="alert alert-success">
+        <?= $success ?>
     </div>
 <?php endif ?>
 
